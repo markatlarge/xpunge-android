@@ -1,0 +1,3 @@
+rootProject.name = 'xpunge-android'
+include ':library'
+include ':example'

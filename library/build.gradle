@@ -1,0 +1,77 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+android {
+    compileSdkVersion 34
+    namespace 'com.xpunge.android'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    defaultConfig {
+        minSdkVersion 24
+    }
+
+    aaptOptions {
+        // Prevent aapt from compressing .enc so AssetManager can stream it
+        noCompress 'enc'
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+}
+
+dependencies {
+    // LiteRT 1.4.0 — do NOT upgrade to 2.x (breaks Interpreter API)
+    // do NOT add litert-gpu — GPU delegate causes native SIGSEGV on many devices
+    implementation 'com.google.ai.edge.litert:litert:1.4.0'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId    = 'com.xpunge'
+                artifactId = 'xpunge-android'
+                version    = '0.1.0'
+
+                pom {
+                    name        = 'xPunge Android SDK'
+                    description = 'On-device NSFW detection for Android. No uploads. No cloud.'
+                    url         = 'https://xpunge.markatlarge.com'
+                    licenses {
+                        license {
+                            name = 'SEE LICENSE IN LICENSE'
+                        }
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                name = 'GitHubPackages'
+                url  = uri('https://maven.pkg.github.com/markatlarge/xpunge-android')
+                credentials {
+                    username = project.findProperty('gpr.user') ?: System.getenv('GITHUB_USERNAME')
+                    password = project.findProperty('gpr.key')  ?: System.getenv('GITHUB_TOKEN')
+                }
+            }
+        }
+    }
+}
