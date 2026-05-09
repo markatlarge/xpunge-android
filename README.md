@@ -2,7 +2,7 @@
 
 On-device NSFW detection for Android. No uploads. No cloud. Pure margin.
 
-**[Get a free API key →](https://xpunge.markatlarge.com)**
+**[Get a free API key →](https://xpunge-backend.onrender.com/dashboard/)**
 
 ---
 
@@ -137,7 +137,7 @@ data class Detection(
 | Scale | $499/mo | 5,000,000 |
 | Enterprise | Custom | 5M+ |
 
-[Sign up and get a free key →](https://xpunge.markatlarge.com)
+[Sign up and get a free key →](https://xpunge-backend.onrender.com/dashboard/)
 
 ---
 
